@@ -13,13 +13,15 @@ function updateMovie (id, data){
     return moviesRef.child(id).set(data)
 }
 
-function getMovieDetails (id) {
-    //@TODO: Refactor por la comunidad
-    return new Promise ((resolve, reject) => {
-        moviesRef.child(id).once("value", data => {
-            resolve(data.val())
-        })
-    })
+/**
+ * getMovieDetails - retrieves the movie details from the data base by ID
+ * @param {String} id - the movie ID
+ * @return {Object} The movie deatils if ID exists in DB, an empty object if it
+ * does not 
+ */
+async function getMovieDetails (id) {
+  const movieDetails = await moviesRef.child(id).once("value");
+  return movieDetails && movieDetails.val() || {};
 }
 
 function getMovieData (title) {
