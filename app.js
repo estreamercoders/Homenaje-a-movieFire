@@ -1,4 +1,5 @@
 const moviesRef = firebase.database().ref("peliculas");
+const apiKey = "😉😉TU TOKEN"
 
 function addMovie (data){
     return moviesRef.push(data)
@@ -26,3 +27,9 @@ function getMovies () {
         console.log("data:", data.val())
     })
 }
+
+function getMovieData (title) {
+    const url = `http://www.omdbapi.com/?t=${title}&apikey=${apiKey}`
+    return fetch(url).then(res => res.json())
+}
+
