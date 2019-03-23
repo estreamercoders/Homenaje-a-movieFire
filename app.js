@@ -43,18 +43,17 @@ moviesRef.on("value", data => {
     const peliculasData = data.val()
     console.log("data:", peliculasData)
 
-    let htmlFinal = "";
-    //@TODO: Refactor por la comunidad, usando Arrays :-)
-    for (const key in peliculasData) {
-        if (peliculasData.hasOwnProperty(key)) {
-            const element = peliculasData[key];
-            htmlFinal += `<li data-id="${key}">${element.Title}
-                <button data-action="details">Detalles</button>
-                <button data-action="edit">Editar</button>
-                <button data-action="delete">Borrar</button>
-            </li>`;    
-        }
-    }
+    let htmlFinal = Object.keys(peliculasData).map(peliculaId => {
+      const element = peliculasData[peliculaId];
+      return `
+        <li data-id="${peliculaId}">${element.Title}
+          <button data-action="details">Detalles</button>
+          <button data-action="edit">Editar</button>
+          <button data-action="delete">Borrar</button>
+        </li>
+      `;
+    }).join('');
+
     filmSlctr.innerHTML = htmlFinal
 })
 
