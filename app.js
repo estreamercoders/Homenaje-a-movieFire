@@ -48,10 +48,12 @@ moviesRef.on("value", data => {
     for (const key in peliculasData) {
         if (peliculasData.hasOwnProperty(key)) {
             const element = peliculasData[key];
-            htmlFinal += `<li class="movie" data-id="${key}">${element.Title}
-                <button data-action="details" class="nes-btn">Detalles</button>
-                <button data-action="edit" class="nes-btn">Editar</button>
-                <button data-action="delete" class="nes-btn is-error">Borrar</button>
+            htmlFinal += `<li class="movie" data-id="${key}"><p>${element.Title}</p>
+                <div class="btns-container">
+                    <button data-action="details" class="nes-btn">Detalles</button>
+                    <button data-action="edit" class="nes-btn">Editar</button>
+                    <button data-action="delete" class="nes-btn is-error">Borrar</button>
+                </div>
             </li>`;    
         }
     }
@@ -62,7 +64,8 @@ moviesRef.on("value", data => {
 filmSlctr.addEventListener("click", event => {
     const target = event.target;
     if(target.nodeName === "BUTTON") {
-        const id = target.parentNode.dataset.id;
+        //Deberíamos mejorar el acceso al dataset, el doble parentNode no es de buen ver.
+        const id = target.parentNode.parentNode.dataset.id;
         const action = target.dataset.action;
         if(action === "details") {
             getMovieDetails(id)

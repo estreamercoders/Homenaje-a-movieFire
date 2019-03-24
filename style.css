@@ -7,6 +7,26 @@ body {
     margin: 10px;
 }
 
+.app-title {
+    font-size: 24px !important;
+}
+
+.movie {
+    display: flex;
+    justify-content: space-between;
+    margin: 8px;
+}
+
+.movie p{
+    margin: 14px;
+}
+
+.movie .btns_container {
+    margin-right: auto;
+}
+
+
+
 #details {
     display: none;
     background-color: green;
@@ -15,11 +35,9 @@ body {
 }
 
 #peliculas{
-    margin-top: 36px;
+    margin: 36px 0;
 }
 
-button{
-}
-
-.movie{
+hr{
+    border: 2px solid black;
 }
