@@ -1,5 +1,5 @@
 const moviesRef = firebase.database().ref("peliculas");
-const apiKey = "😉😉TU TOKEN"
+const apiKey = "c71f8b0e"
 
 function addMovie (data){
     return moviesRef.push(data)
@@ -48,10 +48,10 @@ moviesRef.on("value", data => {
     for (const key in peliculasData) {
         if (peliculasData.hasOwnProperty(key)) {
             const element = peliculasData[key];
-            htmlFinal += `<li data-id="${key}">${element.Title}
-                <button data-action="details">Detalles</button>
-                <button data-action="edit">Editar</button>
-                <button data-action="delete">Borrar</button>
+            htmlFinal += `<li class="movie" data-id="${key}">${element.Title}
+                <button data-action="details" class="nes-btn">Detalles</button>
+                <button data-action="edit" class="nes-btn">Editar</button>
+                <button data-action="delete" class="nes-btn is-error">Borrar</button>
             </li>`;    
         }
     }

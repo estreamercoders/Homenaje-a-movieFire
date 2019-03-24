@@ -1,7 +1,10 @@
+html, body, pre, code, kbd, samp {
+    font-family: "Press Start 2P";
+}
+
 body {
-    background-color: black;
-    color: lightgreen;
-    font-family: monospace;
+    color: black;
+    margin: 10px;
 }
 
 #details {
@@ -9,4 +12,14 @@ body {
     background-color: green;
     color:white;
     font-style: italic;
+}
+
+#peliculas{
+    margin-top: 36px;
+}
+
+button{
+}
+
+.movie{
 }
