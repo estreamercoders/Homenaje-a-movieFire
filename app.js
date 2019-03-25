@@ -1,8 +1,9 @@
-const moviesRef = firebase.database().ref("peliculas");
-const apiKey = "😉😉TU TOKEN";
+const moviesRef = firebase.database().ref('peliculas');
+const apiKey = '😉😉TU TOKEN';
 
 function addMovie(data) {
   return moviesRef.push(data);
+  return;
 }
 
 function deleteMovie(id) {
@@ -20,7 +21,7 @@ function updateMovie(id, data) {
  * does not
  */
 async function getMovieDetails(id) {
-  const movieDetails = await moviesRef.child(id).once("value");
+  const movieDetails = await moviesRef.child(id).once('value');
   return (movieDetails && movieDetails.val()) || {};
 }
 
@@ -30,23 +31,23 @@ function getMovieData(title) {
 }
 
 function showDetails(data) {
-  detailsSlctr.style.display = "block";
+  detailsSlctr.style.display = 'block';
   detailsSlctr.innerHTML = `<pre><code>${JSON.stringify(
     data,
     null,
-    4
+    4,
   )}</code></pre>`;
 }
 
-const filmSlctr = document.getElementById("peliculas");
-const titleSlctr = document.getElementById("title");
-const detailsSlctr = document.getElementById("details");
+const filmSlctr = document.getElementById('peliculas');
+const titleSlctr = document.getElementById('title');
+const detailsSlctr = document.getElementById('details');
 
 //Eventos
 
-moviesRef.on("value", data => {
+moviesRef.on('value', data => {
   const peliculasData = data.val();
-  console.log("data:", peliculasData);
+  console.log('data:', peliculasData);
 
   let htmlFinal = Object.keys(peliculasData)
     .map(peliculaId => {
@@ -59,37 +60,37 @@ moviesRef.on("value", data => {
         </li>
       `;
     })
-    .join("");
+    .join('');
 
   filmSlctr.innerHTML = htmlFinal;
 });
 
-filmSlctr.addEventListener("click", event => {
+filmSlctr.addEventListener('click', event => {
   const target = event.target;
-  if (target.nodeName === "BUTTON") {
+  if (target.nodeName === 'BUTTON') {
     const id = target.parentNode.dataset.id;
     const action = target.dataset.action;
-    if (action === "details") {
+    if (action === 'details') {
       getMovieDetails(id).then(showDetails);
-    } else if (action === "edit") {
-      const newTitle = prompt("Dime el nuevo titulo").trim();
+    } else if (action === 'edit') {
+      const newTitle = prompt('Dime el nuevo titulo').trim();
       if (newTitle) {
         getMovieData(newTitle).then(movieDetails =>
-          updateMovie(id, movieDetails)
+          updateMovie(id, movieDetails),
         );
       }
-    } else if (action === "delete") {
-      if (confirm("Estas seguro?")) {
+    } else if (action === 'delete') {
+      if (confirm('Estas seguro?')) {
         deleteMovie(id);
       }
     }
   }
 });
 
-titleSlctr.addEventListener("keyup", event => {
+titleSlctr.addEventListener('keyup', event => {
   const titleContent = titleSlctr.value.trim();
   if (event.keyCode === 13 && titleContent) {
-    console.log("ahora si!", titleContent);
+    console.log('ahora si!', titleContent);
     getMovieData(titleContent).then(addMovie);
   }
 });
