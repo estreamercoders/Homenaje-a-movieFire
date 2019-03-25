@@ -42,22 +42,24 @@ const detailsSlctr = document.getElementById("details");
 //Eventos
 
 moviesRef.on("value", data => {
-    const peliculasData = data.val()
-    console.log("data:", peliculasData)
+  const peliculasData = data.val();
+  console.log("data:", peliculasData);
 
-    let htmlFinal = Object.keys(peliculasData).map(peliculaId => {
-      const element = peliculasData[peliculaId];
-      return `
+  let htmlFinal = Object.keys(peliculasData || {}).map(peliculaId => {
+    const element = peliculasData[peliculaId];
+    return element
+      ? `
         <li data-id="${peliculaId}">${element.Title}
           <button data-action="details">Detalles</button>
           <button data-action="edit">Editar</button>
           <button data-action="delete">Borrar</button>
         </li>
-      `;
-    }).join('');
+      `
+      : '';
+  }).join('');
 
-    filmSlctr.innerHTML = htmlFinal
-})
+  filmSlctr.innerHTML = htmlFinal
+});
 
 
 filmSlctr.addEventListener("click", event => {
