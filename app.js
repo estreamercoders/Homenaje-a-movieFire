@@ -27,9 +27,15 @@ function getMovieData (title) {
     return fetch(url).then(res => res.json())
 }
 
-function showDetails (data){
-    detailsSlctr.style.display = "block";
-    detailsSlctr.innerHTML = `<pre><code>${JSON.stringify(data, null, 4)}</code></pre>`;
+function showDetails (id, data){
+    let detailsContainer = document.getElementById(`details-${id}`)
+    let html = ""
+    Object.keys(data).forEach(element => {
+       if(typeof(data[element])!='object' && data[element]!='null'){
+            html += `<li>${element}: ${data[element]}</li>`
+       }
+    });
+    detailsContainer.innerHTML = html
 
 }
 
@@ -48,12 +54,14 @@ moviesRef.on("value", data => {
     for (const key in peliculasData) {
         if (peliculasData.hasOwnProperty(key)) {
             const element = peliculasData[key];
-            htmlFinal += `<li class="movie" data-id="${key}"><p>${element.Title}</p>
+            htmlFinal += `<li class="movie" data-id="${key}">
+                <p>${element.Title}</p>
                 <div class="btns-container">
                     <button data-action="details" class="nes-btn">Detalles</button>
-                    <button data-action="edit" class="nes-btn">Editar</button>
+                    <button data-action="edit" class="nes-btn is-warning">Editar</button>
                     <button data-action="delete" class="nes-btn is-error">Borrar</button>
                 </div>
+                <div class=movie-details id=details-${key}></div>
             </li>`;    
         }
     }
@@ -69,7 +77,7 @@ filmSlctr.addEventListener("click", event => {
         const action = target.dataset.action;
         if(action === "details") {
             getMovieDetails(id)
-                .then(showDetails);
+                .then(movieDetails => showDetails(id, movieDetails));
         } else if (action === "edit") {
             const newTitle = prompt("Dime el nuevo titulo").trim();
             if(newTitle){
