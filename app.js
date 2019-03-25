@@ -3,7 +3,6 @@ const apiKey = '😉😉TU TOKEN';
 
 function addMovie(data) {
   return moviesRef.push(data);
-  return;
 }
 
 function deleteMovie(id) {
@@ -43,7 +42,7 @@ const filmSlctr = document.getElementById('peliculas');
 const titleSlctr = document.getElementById('title');
 const detailsSlctr = document.getElementById('details');
 
-//Eventos
+// Eventos
 
 moviesRef.on('value', data => {
   const peliculasData = data.val();
