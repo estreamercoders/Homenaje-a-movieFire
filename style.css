@@ -17,6 +17,11 @@ body {
     flex-wrap: wrap;
     justify-content: space-between;
     margin: 8px;
+    position: relative;
+}
+
+.movie::before{
+    top: 16px !important;
 }
 
 .movie p{
@@ -29,13 +34,25 @@ body {
 
 .movie-details{
     width: 100%;
+    overflow: hidden;
 }
 
-#details {
-    display: none;
-    background-color: green;
-    color:white;
-    font-style: italic;
+li .detail::before {
+    position: absolute;
+    top: 2px;
+    left: -12px;
+    content: "";
+    width: 2px;
+    height: 2px;
+    color: #fff;
+    box-shadow: 2px 2px, 4px 2px, 2px 4px, 4px 4px, 6px 4px, 8px 4px, 2px 6px, 4px 6px, 6px 6px, 8px 6px, 10px 6px, 2px 8px, 4px 8px, 6px 8px, 8px 8px, 10px 8px, 12px 8px, 2px 10px, 4px 10px, 6px 10px, 8px 10px, 10px 10px, 2px 12px, 4px 12px, 6px 12px, 8px 12px, 2px 14px, 4px 14px;
+}
+
+li .detail-close-btn {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    z-index: 10;
 }
 
 #peliculas{
@@ -44,4 +61,8 @@ body {
 
 hr{
     border: 2px solid black;
+}
+
+.dialog-menu{
+    text-align: right;
 }
