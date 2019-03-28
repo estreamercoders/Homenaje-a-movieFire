@@ -60,8 +60,12 @@ filmSlctr.addEventListener("click", async event => {
         const id = target.parentNode.dataset.id;
         const action = target.dataset.action;
         if(action === "details") {
-            await getMovieDetails(id)
-                    .then(showDetails);
+            try {
+                await getMovieDetails(id)
+                        .then(showDetails);
+            } catch (err) {
+                console.log(err)
+            }
         } else if (action === "edit") {
             const newTitle = prompt("Dime el nuevo titulo").trim();
             if(newTitle){
