@@ -63,8 +63,11 @@ filmSlctr.addEventListener("click", async event => {
             try {
                 await getMovieDetails(id)
                         .then(showDetails);
-            } catch (err) {
-                console.log(err)
+            } catch (error) {
+                showDetails({
+                    detail: `Se ha producido un error.`, 
+                    error,
+                });
             }
         } else if (action === "edit") {
             const newTitle = prompt("Dime el nuevo titulo").trim();
