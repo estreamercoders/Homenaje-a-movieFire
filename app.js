@@ -14,12 +14,7 @@ function updateMovie (id, data){
 }
 
 function getMovieDetails (id) {
-    //@TODO: Refactor por la comunidad
-    return new Promise ((resolve, reject) => {
-        moviesRef.child(id).once("value", data => {
-            resolve(data.val())
-        })
-    })
+    return moviesRef.child(id).once("value", data => data.val())
 }
 
 function getMovieData (title) {
@@ -59,14 +54,14 @@ moviesRef.on("value", data => {
 })
 
 
-filmSlctr.addEventListener("click", event => {
+filmSlctr.addEventListener("click", async event => {
     const target = event.target;
     if(target.nodeName === "BUTTON") {
         const id = target.parentNode.dataset.id;
         const action = target.dataset.action;
         if(action === "details") {
-            getMovieDetails(id)
-                .then(showDetails);
+            await getMovieDetails(id)
+                    .then(showDetails);
         } else if (action === "edit") {
             const newTitle = prompt("Dime el nuevo titulo").trim();
             if(newTitle){
@@ -89,4 +84,3 @@ titleSlctr.addEventListener("keyup", event => {
         .then(addMovie)
     }
 })
-
