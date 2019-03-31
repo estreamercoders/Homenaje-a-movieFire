@@ -13,13 +13,15 @@ function updateMovie (id, data){
     return moviesRef.child(id).set(data)
 }
 
-function getMovieDetails (id) {
-    //@TODO: Refactor por la comunidad
-    return new Promise ((resolve, reject) => {
-        moviesRef.child(id).once("value", data => {
-            resolve(data.val())
-        })
-    })
+/**
+ * getMovieDetails - retrieves the movie details from the data base by ID
+ * @param {String} id - the movie ID
+ * @return {Object} The movie deatils if ID exists in DB, an empty object if it
+ * does not 
+ */
+async function getMovieDetails (id) {
+  const movieDetails = await moviesRef.child(id).once("value");
+  return movieDetails && movieDetails.val() || {};
 }
 
 function getMovieData (title) {
@@ -40,23 +42,24 @@ const detailsSlctr = document.getElementById("details");
 //Eventos
 
 moviesRef.on("value", data => {
-    const peliculasData = data.val()
-    console.log("data:", peliculasData)
+  const peliculasData = data.val();
+  console.log("data:", peliculasData);
 
-    let htmlFinal = "";
-    //@TODO: Refactor por la comunidad, usando Arrays :-)
-    for (const key in peliculasData) {
-        if (peliculasData.hasOwnProperty(key)) {
-            const element = peliculasData[key];
-            htmlFinal += `<li data-id="${key}">${element.Title}
-                <button data-action="details">Detalles</button>
-                <button data-action="edit">Editar</button>
-                <button data-action="delete">Borrar</button>
-            </li>`;    
-        }
-    }
-    filmSlctr.innerHTML = htmlFinal
-})
+  let htmlFinal = Object.keys(peliculasData || {}).map(peliculaId => {
+    const element = peliculasData[peliculaId];
+    return element
+      ? `
+        <li data-id="${peliculaId}">${element.Title}
+          <button data-action="details">Detalles</button>
+          <button data-action="edit">Editar</button>
+          <button data-action="delete">Borrar</button>
+        </li>
+      `
+      : '';
+  }).join('');
+
+  filmSlctr.innerHTML = htmlFinal
+});
 
 
 filmSlctr.addEventListener("click", event => {
