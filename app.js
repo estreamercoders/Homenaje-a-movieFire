@@ -1,5 +1,5 @@
 const moviesRef = firebase.database().ref("peliculas");
-const apiKey = "API KEY"
+const apiKey = "c71f8b0e"
 
 
 function addMovie (data){
