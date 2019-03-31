@@ -1,5 +1,5 @@
 const moviesRef = firebase.database().ref("peliculas");
-const apiKey = "c71f8b0e"
+const apiKey = "API KEY"
 
 
 function addMovie (data){
@@ -50,7 +50,6 @@ function showDetails (id, data){
     detailsContainer.innerHTML = html
 
     detailCloseBtn = document.getElementById(`btn-${id}`)
-    console.log(detailCloseBtn)
 
     // Mejorar esto!! Evento del botón de cerrar detalles
     detailCloseBtn.addEventListener('click', event =>{
@@ -70,23 +69,29 @@ function hideDetails(element) {
     elementToHide.style.margin = '0px'
 }
 
-function editMovie(){
-
-    editMovieModal().addEventListener('click', event => {
+// Falta terminar esta parte. Hay que hacer update con todos los datos de la nueva pelicula, no solo el título.
+function editMovie(id){
+    const modal = editMovieModal();
+    let newTitle = null
+    modal.addEventListener('click', event => {
         const buttonId = event.target
         switch(buttonId.dataset.action){
             case 'cancel':
-                editMovieModal.close()
+                debugger
+                modal.close()
             break;
             case 'confirm':
-                let newTitle = document.getElementById('inputEditMovie').value
-                editMovieModal.close()
-                return newTitle
+                debugger
+                modal.close()
+                newTitle = document.getElementById('inputEditMovie').value.trim()
+                updateMovie(id, {Title: newTitle})
             break;
         }
-        editMovieModal.parentNode.remove(editMovieModal)
+        modal.parentNode.removeChild(modal)
     })
 }
+
+
 
 
 const filmSlctr = document.getElementById("peliculas");
@@ -129,11 +134,13 @@ filmSlctr.addEventListener("click", event => {
             getMovieDetails(id)
                 .then(movieDetails => showDetails(id, movieDetails));
         } else if (action === "edit") {
-            console.log(editMovie() )
+            editMovie(id)
         } else if (action === "delete") {
             const confirmModal = deleteMovieModal()
             confirmModal.addEventListener('click', event => {
-                event.target.dataset.action == 'confirm' ? deleteMovie(id).then(confirmModal.parentNode.removeChild(confirmModal))
+                event.preventDefault()
+                event.target.dataset.action == 'confirm' 
+                                            ? deleteMovie(id)
                                             : confirmModal.close();
                 confirmModal.parentNode.removeChild(confirmModal)
             })
@@ -199,6 +206,7 @@ function editMovieModal(){
         document.body.appendChild(dialog)
         dialogPolyfill.registerDialog(dialog)
     }
-    dialog.showModal()
+
+    if(dialog.open != true) dialog.showModal()
     return dialog
 }
