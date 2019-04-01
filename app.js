@@ -25,7 +25,7 @@ async function getMovieDetails (id) {
 }
 
 function getMovieData(title) {
-  const url = `http://www.omdbapi.com/?t=${title}&apikey=BANMEPLZ`;
+  const url = `http://www.omdbapi.com/?t=${title}&apikey=${apiKey}`;
   return fetch(url).then(res => res.json());
 }
 
