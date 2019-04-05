@@ -61,7 +61,7 @@ moviesRef.on('value', data => {
       `;
     })
     .join('');
-
+})
 
 filmSlctr.addEventListener('click', event => {
   const target = event.target;
@@ -92,4 +92,3 @@ titleSlctr.addEventListener('keyup', event => {
     getMovieData(titleContent).then(addMovie);
   }
 });
-
