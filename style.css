@@ -1,12 +1,37 @@
 body {
-    background-color: black;
-    color: lightgreen;
-    font-family: monospace;
+  background-color: white;
+  color: black;
+  padding: 2em;
 }
 
-#details {
-    display: none;
-    background-color: green;
-    color:white;
-    font-style: italic;
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.main-content {
+  margin-bottom: 4em;
+}
+.title-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1.5em;
+  padding: 0.5em;
+}
+
+.nes-input {
+  margin-bottom: 2em;
+}
+
+.nes-list > li {
+  margin-bottom: 1em;
+}
+
+marquee {
+  padding: 16px;
+}
+
+img {
+  vertical-align: unset;
 }
