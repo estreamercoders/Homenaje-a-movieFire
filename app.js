@@ -13,6 +13,7 @@ function updateMovie(id, data) {
   return moviesRef.child(id).set(data);
 }
 
+
 /**
  * getMovieDetails - retrieves the movie details from the data base by ID
  * @param {String} id - the movie ID
@@ -61,8 +62,6 @@ moviesRef.on('value', data => {
     })
     .join('');
 
-  filmSlctr.innerHTML = htmlFinal;
-});
 
 filmSlctr.addEventListener('click', event => {
   const target = event.target;
@@ -93,3 +92,4 @@ titleSlctr.addEventListener('keyup', event => {
     getMovieData(titleContent).then(addMovie);
   }
 });
+
