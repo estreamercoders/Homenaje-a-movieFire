@@ -1,5 +1,5 @@
 const moviesRef = firebase.database().ref("peliculas");
-const apiKey = "API TOKEN"
+const apiKey = '😉😉TU TOKEN'
 
 
 function addMovie (data){
@@ -31,7 +31,7 @@ function getMovieData (title) {
 function showDetails (id, data){
     let detailsContainer = document.getElementById(`details-${id}`)
     let html = ""
-    
+
     detailsContainer.classList.add('nes-container')
     detailsContainer.classList.add('with-title')
     detailsContainer.classList.add('is-rounded')
@@ -117,7 +117,7 @@ moviesRef.on("value", data => {
                     <button data-action="delete" class="nes-btn is-error">Borrar</button>
                 </div>
                 <div class="movie-details" id="details-${key}"></div>
-            </li>`;    
+            </li>`;
         }
     }
     filmSlctr.innerHTML = htmlFinal
@@ -139,7 +139,7 @@ filmSlctr.addEventListener("click", event => {
             const confirmModal = deleteMovieModal()
             confirmModal.addEventListener('click', event => {
                 event.preventDefault()
-                event.target.dataset.action == 'confirm' 
+                event.target.dataset.action == 'confirm'
                                             ? deleteMovie(id)
                                             : confirmModal.close();
                 confirmModal.parentNode.removeChild(confirmModal)
@@ -150,7 +150,7 @@ filmSlctr.addEventListener("click", event => {
 
 titleSlctr.addEventListener("keyup", event => {
     const titleContent = titleSlctr.value.trim();
-    
+
     if(event.keyCode === 13 && titleContent){
         getMovieData(titleContent)
         .then(addMovie)
@@ -170,13 +170,13 @@ const customConfirm = `<form method="dialog">
 
 function deleteMovieModal() {
     let dialog = document.getElementById('dialog-confirm')
-    
+
     if(dialog == null){
         dialog = document.createElement("dialog")
         dialog.classList.add('nes-dialog')
         dialog.attributes.id = 'dialog-confirm'
         dialog.innerHTML = customConfirm
-        document.body.appendChild(dialog)   
+        document.body.appendChild(dialog)
         dialogPolyfill.registerDialog(dialog)
     }
 

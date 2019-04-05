@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>MovieFire</title>
     <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
     <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
@@ -22,24 +22,68 @@
       <hr>
       <marquee behavior="" direction="">Esto necesita tu Pull Resquest.... ¡Y lo sabes! <img width="30px" src="https://ep01.epimg.net/verne/imagenes/2017/07/06/articulo/1499348316_032426_1499348987_noticia_normal.jpg"></marquee>
     </div>
+          <div class="lists">
+            <ul id="peliculas" class="nes-list is-circle"></ul>
+          </div>
+        </section>
 
+        <marquee behavior="" direction="">
+          <section class="icon-list">
+            <i class="nes-icon is-large heart"></i>
+            <i class="nes-icon is-large star"></i>
+            <img
+              width="100px"
+              height="64px"
+              src="https://ep01.epimg.net/verne/imagenes/2017/07/06/articulo/1499348316_032426_1499348987_noticia_normal.jpg"
+            />
+            <i class="nes-icon is-large star"></i>
+            <i class="nes-icon is-large heart"></i>
+          </section>
+        </marquee>
+        <div class="nes-container is-dark with-title">
+          <p class="title">Detalles</p>
+          <div id="details">
+            Pincha en el botón Detalles para ver más información de la peli
+          </div>
+        </div>
+      </main>
+      <footer>
+        <span>2019</span>
+      </footer>
+    </div>
+    <!-- Borrar película caja de diálogo -->
+    <section>
+      <dialog class="nes-dialog" id="dialog-delete">
+        <form method="dialog">
+          <p class="title">Borrar Película</p>
+          <p>¿Estás seguro que quieres borrarla?</p>
+          <menu class="dialog-menu">
+            <button type="reset" data-action="cancel" class="nes-btn">
+              No
+            </button>
+            <button type="submit" class="nes-btn is-primary">
+              Si
+            </button>
+          </menu>
+        </form>
+      </dialog>
+    </section>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
       // Initialize Firebase
       var config = {
-        apiKey: "AIzaSyD-m6CjCiZvQhIYZtXDX27rDwK7yPXbjzc",
-        authDomain: "moviefire-96ee4.firebaseapp.com",
-        databaseURL: "https://moviefire-96ee4.firebaseio.com",
-        projectId: "moviefire-96ee4",
-        storageBucket: "moviefire-96ee4.appspot.com",
-        messagingSenderId: "397059917741"
+        apiKey: 'AIzaSyAfUvFuAu37GbcgSv9Tryx38hlhV6K21Xs',
+        authDomain: 'twitch-livecoding.firebaseapp.com',
+        databaseURL: 'https://twitch-livecoding.firebaseio.com',
+        projectId: 'twitch-livecoding',
+        storageBucket: 'twitch-livecoding.appspot.com',
+        messagingSenderId: '617446162555'
       };
       firebase.initializeApp(config);
     </script>
-
-    <script src="./utils/dialog-polyfill.js"></script>
+    <script src="polyfills/dialog-polyfill.js"></script>
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
