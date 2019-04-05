@@ -5,37 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>MovieFire</title>
-    <link
-      href="https://fonts.googleapis.com/css?family=Press+Start+2P"
-      rel="stylesheet"
-    />
-    <link
-      href="https://unpkg.com/nes.css@2.1.0/css/nes.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <main class="main-content">
-        <div class="title-section">
-          <h1 class="main-title">MovieFire</h1>
-          <div>
-            <i class="nes-octocat animate"></i>
-            <a href="https://github.com/estreamercoders/Homenaje-a-movieFire"
-              >Repo</a
-            >
-          </div>
-        </div>
-        <section class="nes-container with-title">
-          <label class="title" for="title">Pelicula</label>
-          <input
-            id="title"
-            type="text"
-            class="nes-input"
-            placeholder="Pon un título"
-          />
-
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="nes-container with-title">
+      <p class="title app-title">MovieFire</p>
+      <div class="nes-field is-inline">
+        <label for="title">Pelicula: </label>
+        <input id="title" type="text" placeholder="Pon un titulo" class="nes-input">
+      </div>
+      <div class="lists">
+      <ul id="peliculas" class="nes-list is-circle"></ul>
+      </div>
+      <hr>
+      <marquee behavior="" direction="">Esto necesita tu Pull Resquest.... ¡Y lo sabes! <img width="30px" src="https://ep01.epimg.net/verne/imagenes/2017/07/06/articulo/1499348316_032426_1499348987_noticia_normal.jpg"></marquee>
+    </div>
           <div class="lists">
             <ul id="peliculas" class="nes-list is-circle"></ul>
           </div>
@@ -84,6 +70,7 @@
     </section>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
     <script>
       // Initialize Firebase
       var config = {
