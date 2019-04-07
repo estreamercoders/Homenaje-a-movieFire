@@ -48,17 +48,17 @@
         <span>#EStreamerCoders 2019</span>
       </footer>
     </div>
-    <!-- Borrar película caja de diálogo -->
     <section>
-      <dialog class="nes-dialog" id="dialog-delete">
+      <dialog class="nes-dialog" id="dialog">
         <form method="dialog">
-          <p class="title">Borrar Película</p>
-          <p>¿Estás seguro que quieres borrarla?</p>
+          <p id="dialog-title" class="title">Borrar Película</p>
+          <p id="dialog-question">¿Estás seguro que quieres borrarla?</p>
+          <input id="dialog-input" type="text" id="inputEditMovie" class="nes-input">
           <menu class="dialog-menu">
-            <button type="reset" data-action="cancel" class="nes-btn">
+            <button class="nes-btn">
               No
             </button>
-            <button type="submit" class="nes-btn is-primary">
+            <button id="dialog-ok" class="nes-btn is-primary">
               Si
             </button>
           </menu>

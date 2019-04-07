@@ -1,7 +1,7 @@
 const moviesRef = firebase.database().ref("peliculas");
 const apiKey = '😉😉TU TOKEN'
 
-
+//CRUD
 function addMovie (data){
     return moviesRef.push(data)
 }
@@ -14,136 +14,60 @@ function updateMovie (id, data){
     return moviesRef.child(id).set(data)
 }
 
-function getMovieDetails (id) {
-    //@TODO: Refactor por la comunidad
-    return new Promise ((resolve, reject) => {
-        moviesRef.child(id).once("value", data => {
-            resolve(data.val())
-        })
-    })
+/**
+ * getMovieDetails - retrieves the movie details from the data base by ID
+ * @param {String} id - the movie ID
+ * @return {Object} The movie deatils if ID exists in DB, an empty object if it
+ * does not
+ */
+async function getMovieDetails (id) {
+  const movieDetails = await moviesRef.child(id).once("value");
+  return movieDetails && movieDetails.val() || {};
 }
 
+
+// AJAX
 function getMovieData (title) {
     const url = `http://www.omdbapi.com/?t=${title}&apikey=${apiKey}`
     return fetch(url).then(res => res.json())
 }
 
-function showDetails (id, data){
-    let detailsContainer = document.getElementById(`details-${id}`)
-    let html = ""
 
-    detailsContainer.classList.add('nes-container')
-    detailsContainer.classList.add('with-title')
-    detailsContainer.classList.add('is-rounded')
-    detailsContainer.classList.add('is-dark')
-    detailsContainer.style.margin = '24px'
-
-    html += `<p class="title">Detalles</p>
-            <a id="btn-${id}" class="nes-btn is-error detail-close-btn">X</a>`
-
-    //Falta manejar los arrays de los datos
-    Object.keys(data).forEach(element => {
-       if(typeof(data[element])!='object' && data[element]!='null'){
-            html += `<li><p class="detail">${element}: ${data[element]}</p></li>`
-       }
-    });
-    detailsContainer.innerHTML = html
-
-    detailCloseBtn = document.getElementById(`btn-${id}`)
-
-    // Mejorar esto!! Evento del botón de cerrar detalles
-    detailCloseBtn.addEventListener('click', event =>{
-        hideDetails(event.target.parentNode)
-    })
-
-}
-
-function hideDetails(element) {
-    console.log(element)
-    let elementToHide = element
-    elementToHide.innerHTML = ''
-    elementToHide.classList.remove('nes-container')
-    elementToHide.classList.remove('with-title')
-    elementToHide.classList.remove('is-rounded')
-    elementToHide.classList.remove('is-dark')
-    elementToHide.style.margin = '0px'
-}
-
-// Falta terminar esta parte. Hay que hacer update con todos los datos de la nueva pelicula, no solo el título.
-function editMovie(id){
-    const modal = editMovieModal();
-    let newTitle = null
-    modal.addEventListener('click', event => {
-        const buttonId = event.target
-        switch(buttonId.dataset.action){
-            case 'cancel':
-                debugger
-                modal.close()
-            break;
-            case 'confirm':
-                debugger
-                modal.close()
-                newTitle = document.getElementById('inputEditMovie').value.trim()
-                updateMovie(id, {Title: newTitle})
-            break;
-        }
-        modal.parentNode.removeChild(modal)
-    })
-}
-
-
-
-
+// Selectores & Polyfill
 const filmSlctr = document.getElementById("peliculas");
 const titleSlctr = document.getElementById("title");
 const detailsSlctr = document.getElementById("details");
+const dialogSlctr = document.getElementById("dialog");
+const dialogAccepted = document.getElementById("dialog-ok");
+const dialogTitle = document.getElementById("dialog-title");
+const dialogQuestion = document.getElementById("dialog-question");
+const dialogInput = document.getElementById("dialog-input");
+
+dialogPolyfill.registerDialog(dialogSlctr);
 
 //Eventos
-
 moviesRef.on("value", data => {
-    const peliculasData = data.val()
-    console.log("data:", peliculasData)
-
-    let htmlFinal = "";
-    //@TODO: Refactor por la comunidad, usando Arrays :-)
-    for (const key in peliculasData) {
-        if (peliculasData.hasOwnProperty(key)) {
-            const element = peliculasData[key];
-            htmlFinal += `<li class="movie" data-id="${key}">
-                <p>${element.Title}</p>
-                <div class="btns-container">
-                    <button data-action="details" class="nes-btn">Detalles</button>
-                    <button data-action="edit" class="nes-btn is-warning">Editar</button>
-                    <button data-action="delete" class="nes-btn is-error">Borrar</button>
-                </div>
-                <div class="movie-details" id="details-${key}"></div>
-            </li>`;
-        }
-    }
-    filmSlctr.innerHTML = htmlFinal
-})
-
+  const peliculasData = data.val() || {};
+  filmSlctr.innerHTML = Object.keys(peliculasData)
+    .map(key => movieTpl(key, peliculasData[key]))
+    .join('');
+});
 
 filmSlctr.addEventListener("click", event => {
+    event.preventDefault();
     const target = event.target;
     if(target.nodeName === "BUTTON") {
-        //Deberíamos mejorar el acceso al dataset, el doble parentNode no es bonito.
+        //@TODO: Deberíamos mejorar el acceso al dataset, el doble parentNode no es bonito.
         const id = target.parentNode.parentNode.dataset.id;
         const action = target.dataset.action;
         if(action === "details") {
-            getMovieDetails(id)
-                .then(movieDetails => showDetails(id, movieDetails));
+          showDetails(id)
         } else if (action === "edit") {
-            editMovie(id)
+            editMovieModal(id)
         } else if (action === "delete") {
-            const confirmModal = deleteMovieModal()
-            confirmModal.addEventListener('click', event => {
-                event.preventDefault()
-                event.target.dataset.action == 'confirm'
-                                            ? deleteMovie(id)
-                                            : confirmModal.close();
-                confirmModal.parentNode.removeChild(confirmModal)
-            })
+            deleteMovieModal(id)
+        } else if (action === "close") {
+            hideDetails(target.parentNode)
         }
     }
 })
@@ -157,56 +81,86 @@ titleSlctr.addEventListener("keyup", event => {
     }
 })
 
-// Custom confirm dialog
+dialogAccepted.addEventListener("click", event => {
+  const action = dialogSlctr.dataset.action;
+  const id = dialogSlctr.dataset.id;
 
-const customConfirm = `<form method="dialog">
-                            <p class="title"><span class="nes-text is-warning">Atención!</span></p>
-                            <p>Estás segurx que quieres eliminar la película?</p>
-                            <menu class="dialog-menu">
-                                <button class="nes-btn" data-action="cancel">Cancel</button>
-                                <button class="nes-btn is-primary" data-action="confirm">Confirmar</button>
-                            </menu>
-                        </form>`
-
-function deleteMovieModal() {
-    let dialog = document.getElementById('dialog-confirm')
-
-    if(dialog == null){
-        dialog = document.createElement("dialog")
-        dialog.classList.add('nes-dialog')
-        dialog.attributes.id = 'dialog-confirm'
-        dialog.innerHTML = customConfirm
-        document.body.appendChild(dialog)
-        dialogPolyfill.registerDialog(dialog)
+  if(action === "delete") {
+    deleteMovie(id)
+  } else if (action === "edit") {
+    const newTitle =  dialogInput.value.trim();
+    if(newTitle){
+      getMovieData(newTitle).then(data => updateMovie(id, data))
     }
+  }
 
-    if(dialog.open != true) dialog.showModal()
-    return dialog
+  dialogSlctr.removeAttribute("data-id")
+  dialogSlctr.removeAttribute("data-action")
+})
+
+
+// UI
+
+function movieTpl (key, film) {
+  if(film){
+    return `<li class="movie" data-id="${key}">
+        <p>${film.Title}</p>
+        <div class="btns-container">
+            <button data-action="details" class="nes-btn">Detalles</button>
+            <button data-action="edit" class="nes-btn is-warning">Editar</button>
+            <button data-action="delete" class="nes-btn is-error">Borrar</button>
+        </div>
+
+        <div class="movie-details nes-container with-title is-rounded is-dark" id="details-${key}">
+            <p class="title">Detalles</p>
+            <button id="btn-${key}" data-action="close" class="nes-btn is-error detail-close-btn">X</button>
+            <ul>
+            ${movieDetailsTpl(film)}
+            </ul>
+
+        </div>
+    </li>`;
+  }
 }
 
-// Custom edit dialog
+function movieDetailsTpl (data) {
+  console.log("data:", data)
+  let html = "";
+  Object.keys(data).forEach(element => {
+     if(typeof(data[element])!=='object'
+        && data[element] !== 'null'
+        && data[element] !== 'N/A'
+      ){
+          html += `<li><p class="detail">${element}: ${data[element]}</p></li>`
+     }
+  });
+  return html;
+}
 
-const customEdit = `<form method="dialog">
-                        <label for="name_field">Introduce el nuevo nombre de la película:</label>
-                        <input type="text" id="inputEditMovie" class="nes-input">
-                        <menu class="dialog-menu">
-                            <button class="nes-btn" data-action="cancel">Cancel</button>
-                            <button class="nes-btn is-primary" data-action="confirm">Confirmar</button>
-                        </menu>
-                    </form>`
+function showDetails (id, data){
+    let detailsContainer = document.getElementById(`details-${id}`)
+    detailsContainer.style.display = "block";
+}
 
-function editMovieModal(){
-    let dialog = document.getElementById('dialog-edit')
+function hideDetails(element) {
+  element.style.display = "none";
+}
 
-    if(dialog == null){
-        dialog = document.createElement("dialog")
-        dialog.classList.add('nes-dialog')
-        dialog.attributes.id = 'dialog-edit'
-        dialog.innerHTML = customEdit
-        document.body.appendChild(dialog)
-        dialogPolyfill.registerDialog(dialog)
-    }
 
-    if(dialog.open != true) dialog.showModal()
-    return dialog
+function deleteMovieModal(id) {
+  dialogTitle.innerText = "Atención!";
+  dialogQuestion.innerText = "Estás segurx que quieres eliminar la película?";
+  dialogInput.style.display = "none";
+  dialogSlctr.dataset.id = id;
+  dialogSlctr.dataset.action = "delete";
+  dialog.showModal();
+}
+
+function editMovieModal(id){
+  dialogTitle.innerText = "Editar Película";
+  dialogQuestion.innerText = "Introduce el nuevo nombre de la película:";
+  dialogInput.style.display = "block";
+  dialogSlctr.dataset.id = id;
+  dialogSlctr.dataset.action = "edit";
+  dialog.showModal();
 }
