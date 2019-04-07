@@ -5,7 +5,7 @@
   var e = window.CustomEvent;
   function t(e) {
     for (; e; ) {
-      if ('dialog' === e.localName) return e;
+      if (e.localName === 'dialog') return e;
       e = e.parentElement;
     }
     return null;
@@ -20,7 +20,7 @@
   function n(e) {
     return (
       !(!e || !e.hasAttribute('method')) &&
-      'dialog' === e.getAttribute('method').toLowerCase()
+      e.getAttribute('method').toLowerCase() === 'dialog'
     );
   }
   function a(e) {
@@ -37,39 +37,39 @@
     ) {
       new MutationObserver(this.maybeHideModal.bind(this)).observe(e, {
         attributes: !0,
-        attributeFilter: ['open']
+        attributeFilter: ['open'],
       });
     } else {
-      var t,
-        o = !1,
-        i = function() {
-          o ? this.downgradeModal() : this.maybeHideModal(), (o = !1);
-        }.bind(this),
-        n = function(n) {
-          if (n.target === e) {
-            var a = 'DOMNodeRemoved';
-            (o |= n.type.substr(0, a.length) === a),
-              window.clearTimeout(t),
-              (t = window.setTimeout(i, 0));
-          }
-        };
+      var t;
+      var o = !1;
+      var i = function() {
+        o ? this.downgradeModal() : this.maybeHideModal(), (o = !1);
+      }.bind(this);
+      var n = function(n) {
+        if (n.target === e) {
+          var a = 'DOMNodeRemoved';
+          (o |= n.type.substr(0, a.length) === a),
+            window.clearTimeout(t),
+            (t = window.setTimeout(i, 0));
+        }
+      };
       [
         'DOMAttrModified',
         'DOMNodeRemoved',
-        'DOMNodeRemovedFromDocument'
+        'DOMNodeRemovedFromDocument',
       ].forEach(function(t) {
         e.addEventListener(t, n);
       });
     }
     Object.defineProperty(e, 'open', {
       set: this.setOpen.bind(this),
-      get: e.hasAttribute.bind(e, 'open')
+      get: e.hasAttribute.bind(e, 'open'),
     }),
       (this.backdrop_ = document.createElement('div')),
       (this.backdrop_.className = 'backdrop'),
       this.backdrop_.addEventListener('click', this.backdropClick_.bind(this));
   }
-  (e && 'object' != typeof e) ||
+  (e && typeof e !== 'object') ||
     ((e = function(e, t) {
       t = t || {};
       var o = document.createEvent('CustomEvent');
@@ -127,7 +127,7 @@
           e.shiftKey,
           e.metaKey,
           e.button,
-          e.relatedTarget
+          e.relatedTarget,
         ),
           this.dialog_.dispatchEvent(o),
           e.stopPropagation();
@@ -138,7 +138,7 @@
           var t = ['button', 'input', 'keygen', 'select', 'textarea'].map(
             function(e) {
               return e + ':not([disabled])';
-            }
+            },
           );
           t.push('[tabindex]:not([disabled]):not([tabindex=""])'),
             (e = this.dialog_.querySelector(t.join(', ')));
@@ -155,22 +155,22 @@
       showModal: function() {
         if (this.dialog_.hasAttribute('open'))
           throw new Error(
-            "Failed to execute 'showModal' on dialog: The element is already open, and therefore cannot be opened modally."
+            "Failed to execute 'showModal' on dialog: The element is already open, and therefore cannot be opened modally.",
           );
         if (!document.body.contains(this.dialog_))
           throw new Error(
-            "Failed to execute 'showModal' on dialog: The element is not in a Document."
+            "Failed to execute 'showModal' on dialog: The element is not in a Document.",
           );
         if (!r.dm.pushDialog(this))
           throw new Error(
-            "Failed to execute 'showModal' on dialog: There are too many open modal dialogs."
+            "Failed to execute 'showModal' on dialog: There are too many open modal dialogs.",
           );
         (function(e) {
           for (; e && e !== document.body; ) {
-            var t = window.getComputedStyle(e),
-              o = function(e, o) {
-                return !(void 0 === t[e] || t[e] === o);
-              };
+            var t = window.getComputedStyle(e);
+            var o = function(e, o) {
+              return !(void 0 === t[e] || t[e] === o);
+            };
             if (
               t.opacity < 1 ||
               o('zIndex', 'auto') ||
@@ -178,9 +178,9 @@
               o('mixBlendMode', 'normal') ||
               o('filter', 'none') ||
               o('perspective', 'none') ||
-              'isolate' === t.isolation ||
-              'fixed' === t.position ||
-              'touch' === t.webkitOverflowScrolling
+              t.isolation === 'isolate' ||
+              t.position === 'fixed' ||
+              t.webkitOverflowScrolling === 'touch'
             )
               return !0;
             e = e.parentElement;
@@ -188,7 +188,7 @@
           return !1;
         })(this.dialog_.parentElement) &&
           console.warn(
-            'A dialog is being shown inside a stacking context. This may cause it to be unusable. For more information, see this link: https://github.com/GoogleChrome/dialog-polyfill/#stacking-context'
+            'A dialog is being shown inside a stacking context. This may cause it to be unusable. For more information, see this link: https://github.com/GoogleChrome/dialog-polyfill/#stacking-context',
           ),
           this.setOpen(!0),
           (this.openAsModal_ = !0),
@@ -197,45 +197,45 @@
             : (this.replacedStyleTop_ = !1),
           this.dialog_.parentNode.insertBefore(
             this.backdrop_,
-            this.dialog_.nextSibling
+            this.dialog_.nextSibling,
           ),
           this.focus_();
       },
       close: function(t) {
         if (!this.dialog_.hasAttribute('open'))
           throw new Error(
-            "Failed to execute 'close' on dialog: The element does not have an 'open' attribute, and therefore cannot be closed."
+            "Failed to execute 'close' on dialog: The element does not have an 'open' attribute, and therefore cannot be closed.",
           );
         this.setOpen(!1), void 0 !== t && (this.dialog_.returnValue = t);
         var o = new e('close', { bubbles: !1, cancelable: !1 });
         this.dialog_.dispatchEvent(o);
-      }
+      },
     });
   var r = {};
   if (
     ((r.reposition = function(e) {
-      var t = document.body.scrollTop || document.documentElement.scrollTop,
-        o = t + (window.innerHeight - e.offsetHeight) / 2;
+      var t = document.body.scrollTop || document.documentElement.scrollTop;
+      var o = t + (window.innerHeight - e.offsetHeight) / 2;
       e.style.top = Math.max(t, o) + 'px';
     }),
     (r.isInlinePositionSetByStylesheet = function(e) {
       for (var t = 0; t < document.styleSheets.length; ++t) {
-        var o = document.styleSheets[t],
-          n = null;
+        var o = document.styleSheets[t];
+        var n = null;
         try {
           n = o.cssRules;
         } catch (e) {}
         if (n)
           for (var a = 0; a < n.length; ++a) {
-            var r = n[a],
-              l = null;
+            var r = n[a];
+            var l = null;
             try {
               l = document.querySelectorAll(r.selectorText);
             } catch (e) {}
             if (l && i(l, e)) {
-              var s = r.style.getPropertyValue('top'),
-                d = r.style.getPropertyValue('bottom');
-              if ((s && 'auto' !== s) || (d && 'auto' !== d)) return !0;
+              var s = r.style.getPropertyValue('top');
+              var d = r.style.getPropertyValue('bottom');
+              if ((s && s !== 'auto') || (d && d !== 'auto')) return !0;
             }
           }
       }
@@ -243,10 +243,10 @@
     }),
     (r.needsCentering = function(e) {
       return (
-        'absolute' === window.getComputedStyle(e).position &&
+        window.getComputedStyle(e).position === 'absolute' &&
         (!(
-          ('auto' !== e.style.top && '' !== e.style.top) ||
-          ('auto' !== e.style.bottom && '' !== e.style.bottom)
+          (e.style.top !== 'auto' && e.style.top !== '') ||
+          (e.style.bottom !== 'auto' && e.style.bottom !== '')
         ) &&
           !r.isInlinePositionSetByStylesheet(e))
       );
@@ -256,12 +256,12 @@
         ((window.HTMLDialogElement || e.showModal) &&
           console.warn(
             'This browser already supports <dialog>, the polyfill may not work correctly',
-            e
+            e,
           ),
-        'dialog' !== e.localName)
+        e.localName !== 'dialog')
       )
         throw new Error(
-          'Failed to register dialog: The element is not a dialog.'
+          'Failed to register dialog: The element is not a dialog.',
         );
       new a(e);
     }),
@@ -277,7 +277,7 @@
           'click',
           function(t) {
             (this.forwardTab_ = void 0), t.stopPropagation(), e([]);
-          }.bind(this)
+          }.bind(this),
         ),
         (this.handleKey_ = this.handleKey_.bind(this)),
         (this.handleFocus_ = this.handleFocus_.bind(this)),
@@ -290,7 +290,7 @@
             t.forEach(function(e) {
               for (var t, i = 0; (t = e.removedNodes[i]); ++i)
                 t instanceof Element &&
-                  ('dialog' === t.localName && o.push(t),
+                  (t.localName === 'dialog' && o.push(t),
                   (o = o.concat(t.querySelectorAll('dialog'))));
             }),
               o.length && e(o);
@@ -305,7 +305,7 @@
       document.documentElement.removeEventListener(
         'focus',
         this.handleFocus_,
-        !0
+        !0,
       ),
         document.removeEventListener('keydown', this.handleKey_),
         this.mo_ && this.mo_.disconnect();
@@ -316,7 +316,7 @@
         (e = this.pendingDialogStack[o]);
         ++o
       )
-        e.updateZIndex(--t, --t), 0 === o && (this.overlay.style.zIndex = --t);
+        e.updateZIndex(--t, --t), o === 0 && (this.overlay.style.zIndex = --t);
       var i = this.pendingDialogStack[0];
       i
         ? (i.dialog.parentNode || document.body).appendChild(this.overlay)
@@ -326,7 +326,7 @@
     (r.DialogManager.prototype.containedByTopDialog_ = function(e) {
       for (; (e = t(e)); ) {
         for (var o, i = 0; (o = this.pendingDialogStack[i]); ++i)
-          if (o.dialog === e) return 0 === i;
+          if (o.dialog === e) return i === 0;
         e = e.parentElement;
       }
       return !1;
@@ -353,32 +353,32 @@
       }
     }),
     (r.DialogManager.prototype.handleKey_ = function(t) {
-      if (((this.forwardTab_ = void 0), 27 === t.keyCode)) {
+      if (((this.forwardTab_ = void 0), t.keyCode === 27)) {
         t.preventDefault(), t.stopPropagation();
-        var o = new e('cancel', { bubbles: !1, cancelable: !0 }),
-          i = this.pendingDialogStack[0];
+        var o = new e('cancel', { bubbles: !1, cancelable: !0 });
+        var i = this.pendingDialogStack[0];
         i && i.dialog.dispatchEvent(o) && i.dialog.close();
-      } else 9 === t.keyCode && (this.forwardTab_ = !t.shiftKey);
+      } else t.keyCode === 9 && (this.forwardTab_ = !t.shiftKey);
     }),
     (r.DialogManager.prototype.checkDOM_ = function(e) {
       this.pendingDialogStack.slice().forEach(function(t) {
-        -1 !== e.indexOf(t.dialog) ? t.downgradeModal() : t.maybeHideModal();
+        e.indexOf(t.dialog) !== -1 ? t.downgradeModal() : t.maybeHideModal();
       });
     }),
     (r.DialogManager.prototype.pushDialog = function(e) {
       var t = (this.zIndexHigh_ - this.zIndexLow_) / 2 - 1;
       return (
         !(this.pendingDialogStack.length >= t) &&
-        (1 === this.pendingDialogStack.unshift(e) && this.blockDocument(),
+        (this.pendingDialogStack.unshift(e) === 1 && this.blockDocument(),
         this.updateStacking(),
         !0)
       );
     }),
     (r.DialogManager.prototype.removeDialog = function(e) {
       var t = this.pendingDialogStack.indexOf(e);
-      -1 !== t &&
+      t !== -1 &&
         (this.pendingDialogStack.splice(t, 1),
-        0 === this.pendingDialogStack.length && this.unblockDocument(),
+        this.pendingDialogStack.length === 0 && this.unblockDocument(),
         this.updateStacking());
     }),
     (r.dm = new r.DialogManager()),
@@ -387,10 +387,10 @@
     void 0 === window.HTMLDialogElement)
   ) {
     var l = document.createElement('form');
-    if ((l.setAttribute('method', 'dialog'), 'dialog' !== l.method)) {
+    if ((l.setAttribute('method', 'dialog'), l.method !== 'dialog')) {
       var s = Object.getOwnPropertyDescriptor(
         HTMLFormElement.prototype,
-        'method'
+        'method',
       );
       if (s) {
         var d = s.get;
@@ -399,7 +399,7 @@
         };
         var c = s.set;
         (s.set = function(e) {
-          return 'string' == typeof e && 'dialog' === e.toLowerCase()
+          return typeof e === 'string' && e.toLowerCase() === 'dialog'
             ? this.setAttribute('method', e)
             : c.call(this, e);
         }),
@@ -416,18 +416,18 @@
           if (o && n(o.form)) {
             if (
               !(
-                'submit' === o.type &&
+                o.type === 'submit' &&
                 ['button', 'input'].indexOf(o.localName) > -1
               )
             ) {
-              if ('input' !== o.localName || 'image' !== o.type) return;
+              if (o.localName !== 'input' || o.type !== 'image') return;
               r.useValue = e.offsetX + ',' + e.offsetY;
             }
             t(o) && (r.formSubmitter = o);
           }
         }
       },
-      !1
+      !1,
     );
     var u = HTMLFormElement.prototype.submit;
     (HTMLFormElement.prototype.submit = function() {
@@ -449,16 +449,16 @@
             }
           }
         },
-        !0
+        !0,
       );
   }
   (r.forceRegisterDialog = r.forceRegisterDialog),
     (r.registerDialog = r.registerDialog),
-    'function' == typeof define && 'amd' in define
+    typeof define === 'function' && 'amd' in define
       ? define(function() {
           return r;
         })
-      : 'object' == typeof module && 'object' == typeof module.exports
+      : typeof module === 'object' && typeof module.exports === 'object'
       ? (module.exports = r)
       : (window.dialogPolyfill = r);
 })();

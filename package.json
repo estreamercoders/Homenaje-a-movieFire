@@ -4,7 +4,7 @@
   "description": "Homenaje a MovieFire",
   "main": "app.js",
   "scripts": {
-    "lint": "eslint \"**/*.js\"",
+    "lint": "eslint \"js/*.js\"",
     "format": "prettier --write \"**/*.js\""
   },
   "repository": {
