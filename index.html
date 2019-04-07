@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>MovieFire</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css@latest/css/nes.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="nes-container with-title">
+
+      <p class="title app-title">MovieFire</p>
+      <div class="nes-field is-inline">
+        <label for="title">Pelicula: </label>
+        <input id="title" type="text" placeholder="Pon un titulo" class="nes-input">
+      </div>
+      <div class="lists">
+      <ul id="peliculas" class="nes-list is-circle"></ul>
+      </div>
+      <hr>
+      <marquee behavior="" direction="">
+        <section class="icon-list">
+          <i class="nes-icon is-small star"></i>
+          Esto necesita tu Pull Resquest.... ¡Y lo sabes!
+          <img
+            width="40px"
+            src="img/julio.png"
+          />
+        </section>
+      </marquee>
+    </div>
+          <div class="lists">
+            <ul id="peliculas" class="nes-list is-circle"></ul>
+          </div>
+        </section>
+
+        <div class="nes-container is-dark with-title">
+          <p class="title">Detalles</p>
+          <div id="details">
+            Pincha en el botón Detalles para ver más información de la peli
+          </div>
+        </div>
+      </main>
+      <footer>
+        <span>#EStreamerCoders 2019</span>
+      </footer>
+    </div>
+    <section>
+      <dialog class="nes-dialog" id="dialog">
+        <form method="dialog">
+          <p id="dialog-title" class="title">Borrar Película</p>
+          <p id="dialog-question">¿Estás seguro que quieres borrarla?</p>
+          <input id="dialog-input" type="text" id="inputEditMovie" class="nes-input">
+          <menu class="dialog-menu">
+            <button class="nes-btn">
+              No
+            </button>
+            <button id="dialog-ok" class="nes-btn is-primary">
+              Si
+            </button>
+          </menu>
+        </form>
+      </dialog>
+    </section>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: 'AIzaSyAfUvFuAu37GbcgSv9Tryx38hlhV6K21Xs',
+        authDomain: 'twitch-livecoding.firebaseapp.com',
+        databaseURL: 'https://twitch-livecoding.firebaseio.com',
+        projectId: 'twitch-livecoding',
+        storageBucket: 'twitch-livecoding.appspot.com',
+        messagingSenderId: '617446162555'
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="js/dialog-polyfill.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
